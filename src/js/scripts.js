@@ -667,9 +667,11 @@ function _scrollTo(target, offset) {
 
 		// ANCHORS
 		$('.js-anchor').click(function(e) {
-			e.preventDefault();
+			if ($($(this).attr('href')).length) {
+				e.preventDefault();
 
-			_scrollTo($(this).attr('href'));
+				_scrollTo($(this).attr('href'));
+			}
 		});
 
 		// MODAL LINKS

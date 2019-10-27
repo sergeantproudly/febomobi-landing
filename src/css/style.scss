@@ -536,12 +536,13 @@ body {
 
 header {
 	height: 60px;
-	margin-bottom: 40px;
+	margin-bottom: 90px;
 	position: relative;
 	z-index: 1;
 
 	&.colored {
 		color: #fff;
+		margin-bottom: 40px;
 
 		a {
 			color: #fff;
@@ -735,7 +736,7 @@ header {
 				}
 			}
 
-			&.type2 {
+			&.account {
 				@media (max-width: $adaptive-width-tablet) {
 					display: none;
 				}
@@ -2970,6 +2971,29 @@ footer {
 					column-count: 2;
 				}
 			}
+		}
+	}
+}
+
+#content {
+	font-size: 16px;
+
+	h1,
+	.h1 {
+		font-size: 42px;
+		line-height: 1.1;
+	}
+
+	h3,
+	.h3 {
+		font-size: 28px;
+		font-weight: 500;
+	}
+
+	p {
+		& + h3,
+		& + .h3 {
+			padding-top: 40px;
 		}
 	}
 }

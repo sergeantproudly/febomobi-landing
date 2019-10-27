@@ -215,6 +215,10 @@ b,strong{
 	& > a {
 		text-decoration: none;
 		color: $color-button-text;
+
+		&:hover {
+			color: $color-button-text;			
+		}
 	}
 
 	&[disabled] {
@@ -242,13 +246,17 @@ b,strong{
 		@include box-shadow-cancel();
 
 		& > a {
-			color: $color-button2-text;			
+			color: $color-button2-text;
+
+			&:hover {
+				color: $color-button2-text;
+			}
 		}
 
 		&:hover {
 			background-color: $color-button2-hover;
 			color: $color-button2-text-hover;
-			border: 1px solid $color-button2-text-hover;
+			border: 1px solid transparent;
 			@include box-shadow-cancel();
 
 			& > a {
