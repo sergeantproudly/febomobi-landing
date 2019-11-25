@@ -748,9 +748,25 @@ function _scrollTo(target, offset) {
 			});
 		});
 
+		// WELCOME
+		$('#welcome ul>.cashback').mouseenter(function() {
+			$('#welcome .hint').addClass('vis');
+		}).mouseleave(function() {
+			$('#welcome .hint').removeClass('vis');
+		});
+
+		// BLOCK CASHBACK
+		$('#bl-cashback ul>.cashback').mouseenter(function() {
+			$('#bl-cashback .hint').addClass('vis');
+		}).mouseleave(function() {
+			$('#bl-cashback .hint').removeClass('vis');
+		});
+
 		// CALCULATOR
 		if ($('#cashback-calculator').length) {
 			var $scale = $('#calculator-scale');
+			var vals = $scale.attr('data-values') ? $scale.attr('data-values').split(',') : false;
+			var services = $scale.attr('data-services') ? $scale.attr('data-services').split(',') : false;
 			var step = parseInt($scale.attr('data-step'));
 			var val = parseInt($scale.attr('data-default'));
 			var min = parseInt($scale.attr('data-min'));
@@ -758,23 +774,40 @@ function _scrollTo(target, offset) {
 
 			function calcSetValue(value) {
 				var price = value * 0.1;
-				var service = '1GB интернета';
+				if (price > 12) price = 12.75;
+
+				var index = vals.indexOf(value + '');
+				var service = services[index];
 
 				$('#cashback-calculator .white>.value').html(value + ' мин.');
 				$('#cashback-calculator .pink>.value').html('€' + price);
-				$('#cashback-calculator .pink>.blue').html(service);
+				$('#cashback-calculator .blue>.value').html(service);
 			}
 
-			$scale.slider({
-				'range': 'min',
-				'value': val,
-				'step': step,
-				'min': min,
-				'max': max,
-				'slide': function(e, ui) {
-					calcSetValue(ui.value);					
-				}
-			});
+			if (vals) {
+				$scale.slider({
+					'range': 'min',
+					'value': vals.indexOf(val + ''),
+					'min': 0,
+					'max': vals.length - 1,
+					'step': 1,
+					'slide': function(e, ui) {
+						calcSetValue(vals[ui.value]);
+					}
+				});
+
+			} else {
+				$scale.slider({
+					'range': 'min',
+					'value': val,
+					'step': step,
+					'min': min,
+					'max': max,
+					'slide': function(e, ui) {
+						calcSetValue(ui.value);					
+					}
+				});
+			}
 			calcSetValue(val);
 		}
 
@@ -836,6 +869,7 @@ function _scrollTo(target, offset) {
 			];
 			$('#bl-tariffs-search form>input[type="text"]').autocomplete({
 				source: countries,
+				position: { my : "left top+12", at: "left bottom" },
 				select: function(e, ui) {
 					// FIXME DEMO
 					$('#bl-tariffs-search .result').stop().delay(200).slideDown(__animationSpeed);
