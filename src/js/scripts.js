@@ -12,6 +12,13 @@ var __isMobileTabletSmall = ($(window).width() <= __widthMobileTabletSmall);
 var __isMobileSmall = ($(window).width() <= __widthMobileSmall);
 var __animationSpeed = 350;
 
+// document language and cookie language test
+if ($.cookie('lang')) {
+	if ($('html').attr('lang') != $.cookie('lang')) {
+		window.location.reload(true);
+	}
+}
+
 function initElements(element) {
 	$element=$(element ? element : 'body');
 
@@ -253,6 +260,20 @@ function parseUrl(url) {
 
 	return parser;
 } 
+
+function getUserLanguage(def) {
+	if (typeof(def) == 'undefined') def = 'en';
+	var language = window.navigator ? (window.navigator.language ||
+                  window.navigator.systemLanguage ||
+                  window.navigator.userLanguage) : def;
+	language = language.substr(0, 2).toLowerCase();
+
+	if (language == 'uk' || language == 'be') {
+		language = 'ru';
+	}
+
+	return language;
+}
 
 function showModal(modal_id, dontHideOthers) {
 	var $modal = $('#' + modal_id);
@@ -748,6 +769,16 @@ function _scrollTo(target, offset) {
 			});
 		});
 
+		// LANGUAGES MENU
+		$('#mn-languages li>a').click(function(e) {
+			e.preventDefault();
+
+			var lang = $(this).attr('data-value');
+			$.cookie('lang', lang);
+
+			window.location.reload(true);
+		});
+
 		// WELCOME
 		$('#welcome ul>.cashback').mouseenter(function() {
 			$('#welcome .hint').addClass('vis');
@@ -772,6 +803,8 @@ function _scrollTo(target, offset) {
 			var min = parseInt($scale.attr('data-min'));
 			var max = parseInt($scale.attr('data-max'));
 
+			var lang = $('html').attr('lang');
+
 			function calcSetValue(value) {
 				var price = value * 0.1;
 				if (price > 12) price = 12.75;
@@ -779,7 +812,7 @@ function _scrollTo(target, offset) {
 				var index = vals.indexOf(value + '');
 				var service = services[index];
 
-				$('#cashback-calculator .white>.value').html(value + ' мин.');
+				$('#cashback-calculator .white>.value').html(value + (lang == 'ru' ? ' мин.' : ' min'));
 				$('#cashback-calculator .pink>.value').html('€' + price);
 				$('#cashback-calculator .blue>.value').html(service);
 			}
@@ -841,8 +874,20 @@ function _scrollTo(target, offset) {
 			$('#bl-sim form').submit(function(e) {
 				e.preventDefault();
 
-				$('#bl-sim .form>form').hide();
-				$('#bl-sim .form>.success').stop().fadeIn(__animationSpeed);
+				var url = 'https://convy.cloud/api/public/v1/newsletter/subscribe';
+
+				$.ajax({
+		            type : $(this).attr('method'),
+		            url  : url,
+		            data : $(this).serialize(),
+		            dataType: 'json',
+		            success: function (response) {
+		            	if (response.message == 'Success') {
+		            		$('#bl-sim .form>form').hide();
+							$('#bl-sim .form>.success').stop().fadeIn(__animationSpeed);
+		            	}
+		            }
+		        });
 			});
 		}
 

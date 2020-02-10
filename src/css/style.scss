@@ -949,6 +949,11 @@ header {
 			opacity: 1;
 			@extend .transition-opacity;
 
+			@media (max-width: $adaptive-width-mobile) {
+				display: block;
+				margin-right: 0;
+			}
+
 			&:hover {
 				opacity: 0.95;
 				@extend .transition-opacity;
@@ -3059,6 +3064,88 @@ footer {
 		& + h3,
 		& + .h3 {
 			padding-top: 40px;
+		}
+	}
+}
+
+.conditions {
+	.date {
+		color: #999;
+	}
+
+	.bold {
+		text-transform: uppercase;
+		color: #333;
+		line-height: 1.4;
+		padding: 5px 60px 5px 34px;
+		border-left: 5px solid #00a7cf;
+		margin-bottom: 50px;
+
+		a {
+			color: #333;
+			text-decoration: none;
+			border-bottom: 1px solid #bbb;
+			@extend .transition-opacity;
+
+			&:hover {
+				opacity: 0.8;
+				@extend .transition-opacity;
+			}
+		}
+	}
+
+	h2,
+	.h2 {
+		font-size: 26px;
+		font-weight: 600;
+		padding-top: 30px;
+	}
+
+	p {
+		& + ul {
+			margin-top: -5px;
+		}
+	}
+
+	ul {
+		margin-bottom: 25px;
+
+		& > li {
+			position: relative;
+			padding-left: 20px;
+			margin-bottom: 11px;
+
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 7px;
+				left: 0;
+				width: 8px;
+				height: 8px;
+				background-color: #00a7cf;
+				@include radius(8px);
+			}
+		}
+	}
+
+	ol {
+		counter-reset: condCounter;
+		margin-bottom: 30px;
+
+		& > li {
+			padding-left: 30px;
+			margin-bottom: 10px;
+			position: relative;
+
+			&:before {
+				counter-increment: condCounter;
+  				content: counter(condCounter) '.';
+  				display: block;
+  				position: absolute;
+  				top: 0;
+  				left: 0;
+			}
 		}
 	}
 }

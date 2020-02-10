@@ -1,4 +1,22 @@
 Order Allow,Deny
 Allow from All
 AddDefaultCharset UTF-8
-RewriteEngine Off
+RewriteEngine On
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} ^\/$
+RewriteRule ^\/?$ /index/
+
+RewriteCond %{REQUEST_URI} !(([^/]+)_(en|ru)\.html)$ [NC]
+RewriteCond %{HTTP_COOKIE} ^.*lang=(en|ru).*$ [NC]
+RewriteRule ^([^/]+)\/?$ /$1_%1.html [L]
+
+RewriteCond %{REQUEST_URI} !(([^/]+)_(en|ru)\.html)$ [NC]
+RewriteCond %{HTTP:Accept-Language} ^(ru|uk|be) [NC]
+RewriteRule ^([^/]+)\/?$ /$1_ru.html [L]
+
+RewriteCond %{HTTP:Accept-Language} ^(!ru) [NC]
+RewriteRule ^([^/]+)\/?$ /$1_en.html [L]
+
+#RewriteCond %{REQUEST_URI} assets\/([^/]+)\/([^/]+)\.([^/-]+)$ [NC]
+#RewriteRule assets\/([^/]+)\/([^/]+)\.([^/-]+)$ assets/$1/$2\.$3 [L]
