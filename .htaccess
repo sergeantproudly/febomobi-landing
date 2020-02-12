@@ -15,8 +15,5 @@ RewriteCond %{REQUEST_URI} !(([^/]+)_(en|ru)\.html)$ [NC]
 RewriteCond %{HTTP:Accept-Language} ^(ru|uk|be) [NC]
 RewriteRule ^([^/]+)\/?$ /$1_ru.html [L]
 
-RewriteCond %{HTTP:Accept-Language} ^(!ru) [NC]
+RewriteCond %{REQUEST_URI} !(([^/]+)_(en|ru)\.html)$ [NC]
 RewriteRule ^([^/]+)\/?$ /$1_en.html [L]
-
-#RewriteCond %{REQUEST_URI} assets\/([^/]+)\/([^/]+)\.([^/-]+)$ [NC]
-#RewriteRule assets\/([^/]+)\/([^/]+)\.([^/-]+)$ assets/$1/$2\.$3 [L]
