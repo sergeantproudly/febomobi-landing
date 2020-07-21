@@ -870,24 +870,61 @@ function _scrollTo(target, offset) {
 		});
 
 		// SIM
+		var hubspotPortalId = '8125152';
+		var hubspotFormGuid = '84127eb0-13b3-469d-a2a0-4a6706d0b6ac';
+
 		if ($('#bl-sim').length) {
+			$('#bl-sim .btn').click(function(e) {
+				$('#bl-sim form input').addClass('attempted');
+			});
+			
 			$('#bl-sim form').submit(function(e) {
 				e.preventDefault();
 
-				var url = 'https://convy.cloud/api/public/v1/newsletter/subscribe';
+				var $form = $(this);
+				var $name = $form.find('input[name="name"]');
+				var $tel = $form.find('input[name="phone"]');
+				var $cb = $('#sim-agreement');
 
-				$.ajax({
-		            type : $(this).attr('method'),
-		            url  : url,
-		            data : $(this).serialize(),
-		            dataType: 'json',
-		            success: function (response) {
-		            	if (response.message == 'Success') {
-		            		$('#bl-sim .form>form').hide();
+				if ($tel.val() && $cb.prop('checked')) {
+					var url = 'https://api.hsforms.com/submissions/v3/integration/submit/' + hubspotPortalId + '/' + hubspotFormGuid;
+					var fields = [
+						{
+							'name': 'firstname',
+							'value': $name.val()
+						},
+						/*
+						{
+							'name': 'email',
+							'value': $email.val()
+						},
+						*/
+						{
+							'name': 'phone',
+							'value': $tel.val()
+						}
+					];
+					var json = {
+						'submittedAt': Date.now(),
+						'fields': fields
+					};
+
+					$.ajax({
+					    url: url,
+					    type: 'POST',
+					    data: JSON.stringify(json),
+					    contentType: 'application/json',
+					    dataType: 'json',
+					    success: function(response) {
+					        $form.get(0).reset();
+							$form.hide();
 							$('#bl-sim .form>.success').stop().fadeIn(__animationSpeed);
-		            	}
-		            }
-		        });
+					    },
+					    error: function(response) {
+					    	console.log(response);
+					    }
+					});
+				}				
 			});
 		}
 

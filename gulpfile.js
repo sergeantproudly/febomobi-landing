@@ -21,7 +21,8 @@ const jsFiles = [
 	'./src/js/jquery.animateNumber.js',
 	'./src/js/slick.min.js',	
 	'./src/js/wow.min.js',
-	'./src/js/scripts.js'
+	'./src/js/scripts.js',
+	'./src/js/cookies_notice.js'
 ];
 
 sass.compiler = require('node-sass');
@@ -74,7 +75,7 @@ function copy() {
 function watch() {
 	browserSync.init({
         server: {
-            baseDir: "./"
+            proxy: 'febomobi.local:8080'
         }
     });
 

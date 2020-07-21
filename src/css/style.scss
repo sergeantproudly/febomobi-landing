@@ -7,6 +7,7 @@
 @import 'jquery.jscrollpane';
 @import 'slick';
 @import 'animate';
+@import 'cookies_notice';
 
 html.html-modal-long {
 	height: auto !important;
@@ -161,7 +162,7 @@ input[type='search'] {
 		height: 47px;
 	}
 
-	&:invalid {
+	&.attempted:invalid {
 		border: 0;
 		box-shadow: inset 0px 0px 4px rgba(255, 42, 45, 1) !important;
 	}
@@ -253,6 +254,11 @@ textarea {
 	@media (max-width: $adaptive-width-mobile) {
 		font-size: 16px;
 		height: 104px;
+	}
+
+	&.attempted:invalid {
+		border: 0;
+		box-shadow: inset 0px 0px 4px rgba(255, 42, 45, 1) !important;
 	}
 }
 
@@ -819,6 +825,16 @@ header {
 				top: 203px;
 			}
 		}
+
+		&.rus {
+			&:after {
+				margin-right: -142px;
+
+				@media (max-width: 377px) {
+					top: 203px;
+				}
+			}
+		}
 	}
 
 	h1,
@@ -949,6 +965,83 @@ header {
 						top: -8px; 
 						width: 128px;
 						height: 50px;
+
+						@media (max-width: $adaptive-width-mobile) {
+							width: 100px;
+							height: 30px;
+							left: -12px;
+						}
+					}
+				}
+			}
+
+			.with-hint {
+				position: relative;
+				cursor: pointer;
+				white-space: nowrap;
+				
+				&:after {
+					content: '?';
+					display: inline-block;
+					vertical-align: middle;
+					font-size: 0;
+					width: 17px;
+					height: 17px;
+					background: url('../images/ico_question.svg') no-repeat center;
+					margin: -10px 0 0 4px;
+				}
+
+				.hint {
+					display: block;
+					visibility: hidden;
+					position: absolute;
+					bottom: 100%;
+					right: -130px;
+					margin-bottom: 5px;
+					background-color: #fff;
+					opacity: 1;
+					font-size: 14px;
+					width: 276px;
+					line-height: 1.285;
+					color: $color-text;
+					text-align: center;
+					white-space: normal;
+					padding: 13px 10px 10px;
+					@include box-shadow(0px, 4px, 25px, rgba(0, 0, 0, 0.12));
+					@include radius(10px);
+
+					@media (max-width: $adaptive-width-tablet) {
+						font-size: 13px;
+						width: 185px;
+						padding: 10px;
+						right: -85px;
+					}
+
+					@media (max-width: $adaptive-width-mobile) {
+						width: 165px;
+						padding: 10px 5px;
+						right: -75px;
+					}
+
+					&:after {
+						content: '';
+						display: block;
+						position: absolute;
+						bottom: -20px;
+						left: 50%;
+						border-color: transparent;
+						border-style: solid;
+						border-width: 10px 9px;
+						border-top-color: #fff;
+						margin-left: -9px;
+					}
+				}
+
+				&:hover {
+					.hint {
+						visibility: visible;
+						margin-bottom: 14px;
+						@extend .transition-all;
 					}
 				}
 			}
@@ -2603,17 +2696,18 @@ header {
 	.form {
 		position: relative;
 		text-align: left;
-		padding: 112px 0 0 560px;
+		max-width: 317px;
+		margin: 0 auto;
 
 		@media (max-width: $adaptive-width-tablet) {
-			padding: 289px 0 0;
+			padding: 0;
 			max-width: 351px;
 			margin: 0 auto;
 		}
 
 		&:before {
 			content: '';
-			display: block;
+			display: none;
 			background: url('../images/sim.png') no-repeat;
 			width: 628px;
 			height: 470px;
@@ -2648,10 +2742,23 @@ header {
 			max-width: 351px;
 			padding-left: 15px;
 			padding-right: 15px;
-			margin-top: 9px;
+			margin: 9px 0 29px;
 
 			@media (max-width: $adaptive-width-mobile) {
 				font-size: 14px;
+			}
+		}
+
+		.cb-line {
+			text-align: center;
+
+			label {
+				color: #fff;
+				font-size: 14px;
+
+				a {
+					color: #fff;
+				}
 			}
 		}
 
@@ -3089,7 +3196,19 @@ footer {
 	}
 }
 
-.conditions {
+#content.conditions {
+	h1,
+	.h1 {
+		@media (max-width: $adaptive-width-mobile) {
+			font-size: 34px;
+			-webkit-hyphens: auto;
+			-ms-hyphens: auto; 
+			-moz-hyphens: auto;
+			hyphens: auto;
+			text-transform: uppercase;
+		}
+	}
+
 	.date {
 		color: #999;
 		margin-bottom: 25px;
