@@ -814,6 +814,10 @@ header {
 				right: 50%;
 				margin-right: -160px;
 			}
+
+			@media (max-width: 337px) {
+				top: 203px;
+			}
 		}
 	}
 
